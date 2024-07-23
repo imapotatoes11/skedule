@@ -1,4 +1,6 @@
 'use client';
+import { format } from 'date-fns';
+import {useEffect, useState} from "react";
 
 interface Period {
     start: string;
@@ -10,7 +12,7 @@ interface Period {
 }
 
 interface ScheduleCardProps {
-    date: string; // dd-mm-yyyy
+    date: string; // yyyy-mm-dd
     periods?: Period[];
 }
 
@@ -32,11 +34,21 @@ export default function ScheduleCard({
         teacher: "Ms. Johnson"
     }]
 }: ScheduleCardProps) {
+    const [formattedDate, setFormattedDate] = useState('');
+
+    useEffect(() => {
+        // const dateObj = new Date(date); // Convert the date string to a Date object
+        const [year, month, day] = date.split('-').map(part => parseInt(part, 10));
+        const dateObj = new Date(Date.UTC(year, month - 1, day + 1));
+
+        const newFormattedDate = format(dateObj, 'eeee MMMM do, yyyy'); // Format the date
+        setFormattedDate(newFormattedDate);
+    }, [date]);
     return (
-        <div className="transition-all p-48 rounded-lg shadow-lg dark:shadow-gray-900 bg-slate-100 dark:bg-slate-900">
-            <h1 className="transition-all text-3xl text-black font-bold dark:text-white">{date}</h1>
+        <div className="transition-all gap-2 p-6 flex flex-col rounded-lg shadow-lg dark:shadow-gray-900 bg-slate-100 dark:bg-slate-900">
+            <h1 className="transition-all text-3xl text-black font-bold dark:text-white mb-2 mx-auto">{formattedDate}</h1>
             {periods.map((period, index) => (
-                <div key={index} className="transition-all flex flex-row gap-4 items-center justify-between p-4 rounded-lg shadow-lg dark:shadow-gray-900 bg-slate-200 dark:bg-slate-800">
+                <div key={index} className="transition-all flex flex-row gap-4 items-center justify-between p-4 rounded-lg shadow-lg dark:shadow-gray-900 bg-white dark:bg-slate-700">
                     <div className="transition-all flex flex-col gap-2">
                         <p className="transition-all text-lg font-semibold text-black dark:text-white">{period.name}</p>
                         <p className="transition-all text-sm text-gray-500 dark:text-gray-400">{period.code}</p>
