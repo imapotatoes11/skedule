@@ -4,11 +4,24 @@ import {useEffect, useState} from "react";
 import {DatePicker} from '@nextui-org/date-picker';
 import {Tooltip} from "@nextui-org/tooltip";
 import {parseDate} from "@internationalized/date";
-import {ArrowPathIcon} from "@heroicons/react/24/solid";
+import {ArrowPathIcon, ArrowLeftIcon, ArrowRightIcon} from "@heroicons/react/24/solid";
+
+function pushDate(currentDate: string, direction: 'forward' | 'backward'): string {
+    const dateObj = new Date(currentDate);
+    if (direction === 'forward') {
+        dateObj.setDate(dateObj.getDate() + 1);
+    } else if (direction === 'backward') {
+        dateObj.setDate(dateObj.getDate() - 1);
+    }
+    return dateObj.toISOString().split('T')[0];
+}
+
 
 export default function Home() {
     // TODO: darkmode: have some divs light, dont make entirely black, bad contrast
     // * \-> same for light mode, add some black or at least dont make it entirely white
+
+    // TODO: click schedule -> modal opens with more info
 
     // ? future to do:
     // ? * highlight active period
@@ -20,18 +33,22 @@ export default function Home() {
     }, []);
     return (
         <main
-            className="transition-all flex h-screen flex-row justify-between align-center items-center dark:bg-slate-950 dark:text-white bg-slate-50 text-black">
-            <button>lb</button>
+            className="transition-all flex h-screen flex-row justify-center align-center items-center dark:bg-slate-950 dark:text-white bg-slate-50 text-black">
+            <Tooltip content="Previous Day" closeDelay={50}>
+                <button className="bg-white p-3 rounded-full hover:scale-110 hover:bg-transparent mx-8 transition-all dark:text-white dark:bg-gray-700 dark:hover:bg-transparent" onClick={() => setDate(pushDate(date, 'backward'))}><ArrowLeftIcon className="cursor-pointer size-6"/></button>
+            </Tooltip>
             <div className="flex flex-col items-center gap-6">
                 <div className="flex flex-row items-center gap-6">
-                    <DatePicker label="Choose a Date" value={parseDate((date))} onChange={(newDate) => setDate(newDate.toString())} className="min-w-[284px]"/>
-                    <Tooltip content="Reset Date" className="cursor-pointer">
-                        <button onClick={() => setDate(new Date().toISOString().split("T")[0])}><ArrowPathIcon className="size-6 text-black dark:text-white"/></button>
+                    <DatePicker label="Choose a Date" value={parseDate((date))} onChange={(newDate) => setDate(newDate.toString())} className="min-w-[284px] shadow-md"/>
+                    <Tooltip content="Reset Date" closeDelay={50}>
+                        <button className="bg-white p-3 rounded-full hover:scale-110 hover:bg-transparent transition-all dark:text-white dark:bg-gray-700 dark:hover:bg-transparent" onClick={() => setDate(new Date().toISOString().split("T")[0])}><ArrowPathIcon className="cursor-pointer size-6 text-black dark:text-white"/></button>
                     </Tooltip>
                 </div>
                 <ScheduleCard date={date}/>
             </div>
-            <button>rb</button>
+            <Tooltip content="Next Day" closeDelay={50}>
+                <button className="bg-white p-3 rounded-full hover:scale-110 hover:bg-transparent mx-8 transition-all dark:text-white dark:bg-gray-700 dark:hover:bg-transparent" onClick={() => setDate(pushDate(date, 'forward'))}><ArrowRightIcon className="cursor-pointer size-6"/></button>
+            </Tooltip>
         </main>
     )
 }

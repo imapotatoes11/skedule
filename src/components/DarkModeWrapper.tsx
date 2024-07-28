@@ -13,7 +13,10 @@ const getPreferredColorScheme = (): string => {
 }
 
 export default function DarkModeWrapper({children}: {children: React.ReactNode}) {
-    const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem("darkmode") === "dark");
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    useEffect(() => {
+        setIsDarkMode(localStorage.getItem("darkmode") === "dark");
+    }, [])
     useEffect(() => {
         if (localStorage.getItem("darkmode") === null) {
             localStorage.setItem("darkmode", getPreferredColorScheme());

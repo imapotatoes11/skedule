@@ -45,10 +45,10 @@ export default function ScheduleCard({
         setFormattedDate(newFormattedDate);
     }, [date]);
     return (
-        <div className="transition-all gap-2 p-6 flex flex-col rounded-lg shadow-lg dark:shadow-gray-900 bg-slate-100 dark:bg-slate-900">
+        <div className="transition-all gap-2 p-6 flex flex-col rounded-lg shadow-lg dark:shadow-gray-900 bg-gray-50 dark:bg-slate-900">
             <h1 className="transition-all text-3xl text-black font-bold dark:text-white mb-2 mx-auto">{formattedDate}</h1>
             {periods.map((period, index) => (
-                <div key={index} className="transition-all flex flex-row gap-4 items-center justify-between p-4 rounded-lg shadow-lg dark:shadow-gray-900 bg-white dark:bg-slate-700">
+                <div key={index} className="transition-all hover:scale-[102.5%] cursor-pointer flex flex-row gap-4 items-center justify-between p-4 rounded-lg shadow-md dark:shadow-gray-900 bg-white dark:bg-slate-700">
                     <div className="transition-all flex flex-col gap-2">
                         <p className="transition-all text-lg font-semibold text-black dark:text-white">{period.name}</p>
                         <p className="transition-all text-sm text-gray-500 dark:text-gray-400">{period.code}</p>
