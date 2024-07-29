@@ -12,7 +12,7 @@ interface ConfigButtonProps {
 }
 
 const ConfigButton: React.FC<ConfigButtonProps> = ({children, onClick, position = 'bottomleft', variant = 'default', disabled, redirectURL = null}) => {
-    var fvariant = `rounded-lg bg-white shadow-lg dark:bg-gray-700 dark:text-white`;
+    var fvariant = `hover:scale-105 rounded-lg bg-white shadow-lg dark:bg-gray-700 dark:text-white`;
     if (variant === 'outline') {
         fvariant = `rounded-lg border-2 border-blue-500 text-blue-600`;
     } else if (variant === 'borderless') {
